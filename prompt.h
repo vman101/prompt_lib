@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 14:40:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 18:53:33 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 22:08:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
 # include "printf/ft_printf.h"
 
 # include <stdbool.h>
+
+# ifdef _WIN32
+#  define NL "\r\n"
+#  undef STDOUT_FILENO
+#  undef STDIN_FILENO
+#  define STDIN_FILENO _fileno(stdin)
+#  define STDOUT_FILENO _fileno(stdout)
+# else
+#  define NL "\n"
+# endif
 
 # define DEL 127
 # define EOT 4
@@ -52,10 +62,10 @@
 
 typedef struct s_history_buffer
 {
-	uint	write;
-	uint	read;
-	uint	buffer_capacity;
-	char	*buffer[BUFFER_CAPACITY];
+	uint32_t	write;
+	uint32_t	read;
+	uint32_t	buffer_capacity;
+	char		*buffer[BUFFER_CAPACITY];
 }	t_history_buffer;
 
 typedef struct s_prompt
@@ -126,7 +136,7 @@ char		*prompt_determine_word_internal(char *input, char **input_path, uint32_t c
 void		prompt_get_next_word_match_internal(char **input, t_prompt *prompt, char *input_path, bool *is_directory);
 
 /* Termios */
-void		terminal_raw_mode_enable_internal(int flag);
-void		terminal_raw_mode_disable_internal(int flag);
+void		terminal_raw_mode_enable_internal(void);
+void		terminal_raw_mode_disable_internal(void);
 
 #endif

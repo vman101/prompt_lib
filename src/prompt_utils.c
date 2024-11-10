@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:23:40 by anarama           #+#    #+#             */
-/*   Updated: 2024/11/10 18:35:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 21:31:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*prompt_get(const char *prompt)
 	_prompt.prompt_length = prompt_display_string_set_internal(&_prompt, prompt);
 	prompt_get_input_internal(&_prompt, PROMPT_INPUT_BUFFER_SIZE, "\n");
 	if (!_prompt.command || !*_prompt.command)
-		return (NULL);
+		return (ft_printf("Failed to read" NL), NULL);
 	ft_putstr_fd(SCREEN_CLEAR_TO_EOF, 1);
 	input = ft_strdup(_prompt.command);
 	if (!input)

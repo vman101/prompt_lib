@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 12:50:35 by vvobis            #+#    #+#             */
-/*   Updated: 2024/09/17 12:13:18 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 21:52:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,22 @@
 
 # include <stdarg.h>
 # include <stdlib.h>
-# include <unistd.h>
+# include <stdio.h>
+
+# ifdef _WIN32
+#  include <io.h>
+#  undef STDIN_FILENO
+
+#  define STDIN_FILENO _fileno(stdin)
+#  undef STDOUT_FILENO
+
+#  define STDOUT_FILENO _fileno(stdout)
+
+# else
+	
+#  include <unistd.h>
+
+# endif
 
 int		ft_fprintf(int fd, const char *format, ...);
 int		ft_printf(const char *format, ...);

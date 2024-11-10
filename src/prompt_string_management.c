@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 08:16:45 by victor            #+#    #+#             */
-/*   Updated: 2024/11/10 19:11:59 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 22:44:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	cursor_position_save(void)
 {
-	ft_putstr_fd(CURSOR_POSITION_SAVE, 1);
+	ft_putstr_fd(CURSOR_POSITION_SAVE, STDOUT_FILENO);
 }
 
 void	cursor_position_restore(void)
 {
-	ft_putstr_fd(CURSOR_POSITION_RESTORE, 1);
+	ft_putstr_fd(CURSOR_POSITION_RESTORE, STDOUT_FILENO);
 }
 
 void	cursor_position_set(uint32_t row, uint32_t column)
@@ -33,8 +33,8 @@ void	prompt_refresh_line_internal(char *input, uint32_t cursor_position_base, ui
 
 	cursor_position_store = cursor_position_current[1];
 	cursor_position_set(cursor_position_current[0], cursor_position_base);
-	ft_putstr_fd(SCREEN_CLEAR_TO_EOL, 1);
-	ft_putstr_fd(input, 1);
+	ft_putstr_fd(SCREEN_CLEAR_TO_EOL, STDOUT_FILENO);
+	ft_putstr_fd(input, STDOUT_FILENO);
 	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + cursor_position_base);
 	cursor_position_current[1] = cursor_position_store;
 }
@@ -53,7 +53,7 @@ char	*buffer_size_manage(char **input, uint32_t old_size, uint32_t size_to_add, 
 		new_size += new_size % scalar;
 		size_multiplier = (old_size / scalar) + 2;
 		input_free_ptr = *input;
-		*input = ft_calloc(1, new_size + 1);
+		*input = ft_calloc(1, new_size * size_multiplier + 1);
 		if (!*input)
 			return (perror("malloc"), lst_memory(NULL, NULL, CLEAN), NULL);
 		ft_memcpy(*input, input_free_ptr, old_size);

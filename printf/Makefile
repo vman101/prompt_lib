@@ -6,17 +6,28 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/14 09:21:46 by victor            #+#    #+#              #
-#    Updated: 2024/11/10 18:12:24 by vvobis           ###   ########.fr        #
+#    Updated: 2024/11/10 21:35:47 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBDIR := lib
 NAME := $(LIBDIR)/libftprintf.a
-CC := cc
-CFLAGS := -Wall -Werror -Wextra
+CC := gcc
+CFLAGS = -Wall -Werror -Wextra
 SRC := ft_fprintf.c ft_printf.c ft_putascii.c ft_puthex.c ft_putptr.c ft_strlen.c ft_putfloat.c
 OBJ := $(SRC:.c=.o)
 
+ifdef DEBUG
+CFLAGS += -g3
+endif
+
+MKDIR = mkdir
+ifeq ($(OS), Windows_NT)
+RM = del /Q
+else
+RM = rm -rf
+MKDIR += -p
+endif
 
 all: $(NAME)
 
@@ -27,12 +38,13 @@ $(OBJ): $(SRC) $(LIBDIR)
 	$(CC) $(CFLAGS) -c $(SRC)
 
 $(LIBDIR):
-	mkdir $@
+	$(MKDIR) $@
 
 clean:
-	rm -f $(OBJ)
+	$(RM) $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(LIBDIR)
+
 
 re: fclean all

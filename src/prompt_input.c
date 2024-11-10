@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:40:20 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 19:17:49 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 22:56:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ static bool	prompt_is_delimiter(char *input, const char *delimiter)
 	return (false);
 }
 
-static char	*prompt_handle_input(	t_prompt *prompt, \
-							char *input, \
-							uint32_t cursor_position[2], \
-							const char *delimiter)
+static char	*prompt_handle_input(t_prompt *prompt, char *input, uint32_t cursor_position[2], const char *delimiter)
 {
 	char		buffer[100];
 	int64_t		bytes_read;
@@ -67,7 +64,7 @@ static char	*prompt_handle_input(	t_prompt *prompt, \
 	while (1)
 	{
 		ft_bzero(buffer, 100);
-		bytes_read = ft_read(0, buffer, 20);
+		bytes_read = ft_read(STDIN_FILENO, buffer, 20);
 		if (bytes_read > 3)
 			prompt_handle_rapid_input_internal(buffer, cursor_position, &input, prompt->prompt_length);
 		else if (bytes_read >= 1)
@@ -90,9 +87,7 @@ static void	prompt_handle_history(t_history_buffer *buffer, char *input)
 	buffer->read = buffer->write;
 }
 
-char	*prompt_get_input_internal(	t_prompt *prompt, \
-							uint32_t prompt_initial_size, \
-							const char *delimiter)
+char	*prompt_get_input_internal(	t_prompt *prompt, uint32_t prompt_initial_size, const char *delimiter)
 {
 	char		*input;
 
@@ -100,17 +95,20 @@ char	*prompt_get_input_internal(	t_prompt *prompt, \
 	if (!input)
 		return (perror("malloc"), NULL);
 	lst_memory(input, free, ADD);
-	/*terminal_raw_mode_enable(ECHOCTL | ICANON);*/
+	terminal_raw_mode_enable_internal();
 	prompt->prompt_display_func(prompt->prompt);
 	cursor_position_get(prompt->cursor_position);
 	prompt->cursor_position[1] = 0;
 	if (!delimiter)
 		delimiter = "\n";
 	input = prompt_handle_input(prompt, input, prompt->cursor_position, delimiter);
-	prompt_handle_history(&prompt->history, input);
-	/*terminal_raw_mode_disable(ECHO | ECHOCTL | ICANON);*/
 	if (!input)
+	{
+		ft_printf("prompt_handle_input returned NULL pointer" NL);
 		return (NULL);
+	}
+	prompt_handle_history(&prompt->history, input);
+	terminal_raw_mode_disable_internal();
 	prompt->command = input;
 	return (input);
 }

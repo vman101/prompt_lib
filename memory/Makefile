@@ -6,13 +6,13 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/10 15:02:31 by vvobis            #+#    #+#              #
-#    Updated: 2024/11/10 15:35:16 by vvobis           ###   ########.fr        #
+#    Updated: 2024/11/10 21:35:52 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC := cc
+CC := gcc
 
-CFLAGS := -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall
 
 SRC := memory.c list.c ft_free.c
 
@@ -21,6 +21,18 @@ OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 
 LIBDIR := lib
 TARGET := $(LIBDIR)/memory.a
+
+ifdef DEBUG
+CFLAGS += -g3
+endif
+
+MKDIR = mkdir
+ifeq ($(OS), Windows_NT)
+RM = del /S /Q
+else
+RM = rm -rf
+MKDIR += -p
+endif
 
 all: $(TARGET)
 
@@ -31,16 +43,15 @@ $(OBJDIR)/%.o: %.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBDIR): $(OBJDIR)
-	mkdir $(LIBDIR)
+	$(MKDIR) $(LIBDIR)
 
 $(OBJDIR):
-	mkdir $(OBJDIR)
+	$(MKDIR) $(OBJDIR)
 
 clean:
-	rm -rf $(OBJDIR)
-	rm -rf $(LIBDIR)
+	$(RM) $(OBJDIR)
 
 fclean: clean
-	rm -rf $(TARGET)
+	$(RM) $(LIBDIR)
 
 re: fclean all

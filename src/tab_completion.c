@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 14:53:58 by victor            #+#    #+#             */
-/*   Updated: 2024/11/10 19:15:57 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 22:16:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	prompt_handle_tab_no_match_internal(const char *input_path, uint32_t cursor
 	(void)input_path, (void)cursor_position_current, (void)prompt;
 	cursor_position_save();
 	ft_putstr_fd(SCREEN_CLEAR_TO_EOF, 0);
-	ft_putstr_fd("\n\r", 1);
+	ft_putstr_fd(NL, 1);
 	cursor_position_restore();
 }
 
@@ -26,7 +26,7 @@ void	prompt_handle_tab_yes_match_internal(t_prompt *prompt, const char *next_wor
 	prompt_handle_multiple_character_internal(input, (char *)(next_word_match + current_word_length), \
 							prompt->cursor_position, ft_strlen(*input));
 	cursor_position_save();
-	ft_putstr_fd("\n\r", 1);
+	ft_putstr_fd(NL, 1);
 	ft_putstr_fd(SCREEN_CLEAR_TO_EOF, 0);
 	cursor_position_restore();
 }

@@ -6,18 +6,32 @@
 #    By: anarama <anarama@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/05 12:24:47 by victor            #+#    #+#              #
-#    Updated: 2024/11/10 19:26:39 by vvobis           ###   ########.fr        #
+#    Updated: 2024/11/10 22:13:18 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 # COMPILER AND FLAGS
-CC          := cc
-CFLAGS      := -Werror -Wall -Wextra
+CC          := gcc
+CFLAGS      = -Werror -Wall -Wextra
+
+RM			= rm
 
 ifdef DEBUG
 	CFLAGS += -g3
 endif
 
+
+MKDIR = mkdir
+
+ifeq ($(OS), Windows_NT)
+RM = del /S /Q
+else
+RM = rm -rf
+MKDIR += -p
+endif
+
 # DIRECTORIES
+
 SRCDIR      := src
 OBJDIR      := obj
 
@@ -27,7 +41,7 @@ SRC         :=	prompt_input.c prompt_string_management.c \
               	escape_sequences.c arrowkeys.c \
               	prompt_print.c tab_get_word.c \
               	non_blocking_mode.c prompt_handle_chars.c \
-				ft_putstr_fd.c utils.c ft_read.c
+				ft_putstr_fd.c utils.c ft_read.c terminal.c
 
 OBJ         := $(SRC:%.c=$(OBJDIR)/%.o)
 SRCS        := $(addprefix $(SRCDIR)/, $(SRC))
@@ -49,10 +63,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR): $(LIBDIR)
-	mkdir -p $@
+	$(MKDIR) $@
 
 $(LIBDIR):
-	mkdir -p $@
+	$(MKDIR) $@
 
 $(LIBS):
 	make -C memory
@@ -61,9 +75,9 @@ $(LIBS):
 clean:
 	make fclean -C memory
 	make fclean -C printf
-	rm -rf $(OBJDIR)
+	$(RM) $(OBJDIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	$(RM) $(LIBDIR)
 
 re: fclean all

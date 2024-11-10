@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 17:14:46 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 18:58:42 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 21:21:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,48 @@
 
 #include <windows.h>
 
-void toggle_non_blocking_mode(int enable)
+void blocking_mode_toggle(int fd, int enable)
 {
-    HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
-    DWORD mode;
-
-    if (hStdin == INVALID_HANDLE_VALUE)
+	HANDLE hStd;
+	DWORD mode;
+	
+	if (fd == 0)
 	{
-        fprintf(stderr, "Error getting standard input handle.\n");
-        exit(1);
-    }
-
-    if (!GetConsoleMode(hStdin, &mode))
+		hStd = GetStdHandle(STD_INPUT_HANDLE);
+	}
+	else if (fd == 1)
 	{
-        fprintf(stderr, "Error getting console mode.\n");
-        exit(1);
-    }
-    if (enable)
-	{
-        mode &= ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
-    }
+		hStd = GetStdHandle(STD_OUTPUT_HANDLE);
+	}
 	else
 	{
-        mode |= (ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
-    }
-
-    if (!SetConsoleMode(hStdin, mode))
+		return ;
+	}
+	if (hStd == INVALID_HANDLE_VALUE)
 	{
-        fprintf(stderr, "Error setting console mode.\n");
-        exit(1);
-    }
+	    fprintf(stderr, "Error getting standard input handle." NL);
+	    exit(1);
+	}
+	
+	if (!GetConsoleMode(hStd, &mode))
+	{
+	    fprintf(stderr, "Error getting console mode." NL);
+	    exit(1);
+	}
+	if (enable)
+	{
+		mode &= ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
+	}
+	else
+	{
+	    mode |= (ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
+	}
+	
+	if (!SetConsoleMode(hStd, mode))
+	{
+	    fprintf(stderr, "Error setting console mode." NL);
+	    exit(1);
+	}
 }
 
 #else

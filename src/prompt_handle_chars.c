@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 17:11:28 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 19:19:30 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/10 21:23:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ uint8_t	prompt_handle_single_char_input_internal(	char **input, char buffer[], u
 											cursor_position_current, input_length_current), 1);
 		else if (buffer[0] == EOT \
 				&& (input_length_current == 0 \
-				|| (*input)[input_length_current - 1] == '\n'))
-			return (ft_putstr_fd("\n", 1), \
+				|| (*input)[input_length_current - 1] == '\r'))
+			return (ft_putstr_fd(NL, STDIN_FILENO), \
 					/*terminal_raw_mode_disable_internal(ECHOCTL), \*/
 					1);
 	}
@@ -76,9 +76,7 @@ bool	prompt_handle_multiple_character_internal(char **input, char buffer[], uint
 	return (do_refresh);
 }
 
-void	prompt_handle_backspace_internal(	char *input,
-								uint32_t *cursor_position_current,
-								uint32_t input_length_current)
+void	prompt_handle_backspace_internal(char *input, uint32_t *cursor_position_current, uint32_t input_length_current)
 {
 	if (cursor_position_current[1] <= 0)
 		return ;
@@ -87,7 +85,7 @@ void	prompt_handle_backspace_internal(	char *input,
 	ft_putstr_fd(CURSOR_MOVE_LEFT, 1);
 }
 
-void	prompt_handle_rapid_input_internal(	char buffer[], uint32_t cursor_position[2], char **input, uint32_t cursor_position_base)
+void	prompt_handle_rapid_input_internal(char buffer[], uint32_t cursor_position[2], char **input, uint32_t cursor_position_base)
 {
 	int32_t	bytes_read;
 	bool	do_refresh;

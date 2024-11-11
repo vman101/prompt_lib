@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:23:40 by anarama           #+#    #+#             */
-/*   Updated: 2024/11/11 14:07:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 15:20:32 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	prompt_destroy(void *prompt)
 	ft_free(&prompt_ptr);
 }
 
+#ifdef _WIN32
 uint32_t	prompt_display_string_set_internal(t_prompt *prompt, const char *prompt_string)
 {
 	uint32_t	prompt_string_length;
@@ -29,6 +30,18 @@ uint32_t	prompt_display_string_set_internal(t_prompt *prompt, const char *prompt
 	return (prompt_string_length);
 }
 
+#else
+
+uint32_t	prompt_display_string_set_internal(t_prompt *prompt, const char *prompt_string)
+{
+	uint32_t	prompt_string_length;
+
+	prompt_string_length = ft_strlen(prompt_string) + 1;
+	prompt->prompt = (char *)prompt_string;
+	return (prompt_string_length);
+}
+
+#endif
 t_prompt	prompt_create_internal(char const *prompt)
 {
 	t_prompt	tmp;

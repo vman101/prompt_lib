@@ -6,12 +6,12 @@
 #    By: anarama <anarama@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/05 12:24:47 by victor            #+#    #+#              #
-#    Updated: 2024/11/11 12:55:00 by marvin           ###   ########.fr        #
+#    Updated: 2024/11/11 14:23:11 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # COMPILER AND FLAGS
-CC          := gcc
+CC          := cc
 CFLAGS      = -Werror -Wall -Wextra -g3
 
 RM			= rm
@@ -50,8 +50,8 @@ SRCS        := $(addprefix $(SRCDIR)/, $(SRC))
 MEMORY      := memory/lib/memory.a
 PRINTF		:= printf/lib/libftprintf.a
 
-LIBS := $(MEMORY) $(PRINTF)
-LIBDIR := lib
+LIBS 		:= $(MEMORY) $(PRINTF)
+LIBDIR 		:= lib
 NAME        := $(LIBDIR)/prompt.a
 
 all: $(NAME)
@@ -62,7 +62,7 @@ test: $(NAME)
 $(NAME): $(OBJ) prompt.h | $(LIBS)
 	ar rcs $@ $(OBJ) $(LIBS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR): $(LIBDIR)

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 21:56:10 by marvin            #+#    #+#             */
-/*   Updated: 2024/11/11 13:29:42 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 14:26:30 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		terminal_raw_mode_disable_internal(void)
 
 #else
 
-void	terminal_raw_mode_enable(void)
+void	terminal_raw_mode_enable_internal(void)
 {
 	struct termios	raw;
 
@@ -52,7 +52,7 @@ void	terminal_raw_mode_enable(void)
 	}
 }
 
-void	terminal_raw_mode_disable(void)
+void	terminal_raw_mode_disable_internal(void)
 {
 	struct termios	orig;
 

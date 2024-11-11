@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:29:29 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/11 12:30:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 15:17:42 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ void	cursor_position_get(uint32_t cursor_position[2])
 	char	cursor_position_str[32];
 	char	*cursor_position_str_ptr;
 	char	*cursor_position_str_ptr2;
+	int		bytes_read;
 
 	ft_bzero(&cursor_position_str, 32);
-	ft_putstr_fd(CURSOR_POSITION_GET, STDOUT_FILENO);
-	ft_read(_fileno(stdin), cursor_position_str, sizeof(cursor_position_str));
+	write(1, CURSOR_POSITION_GET, ft_strlen(CURSOR_POSITION_GET));
+	bytes_read = read(1, cursor_position_str, 32);
+	if (bytes_read == -1)
+		return (perror("read"));
 	cursor_position_str_ptr = cursor_position_str;
 	cursor_position_str_ptr2 = ft_strchr(cursor_position_str, ';');
 	if (!cursor_position_str_ptr2)

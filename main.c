@@ -1,8 +1,6 @@
 #include "prompt.h"
 
-#include <conio.h>  // For _getch()
 #include <stdlib.h>
-#include <io.h>
 #include <fcntl.h>
 
 int main() {

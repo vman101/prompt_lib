@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:02:39 by victor            #+#    #+#             */
-/*   Updated: 2024/11/11 13:10:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 15:25:23 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ static void	prompt_handle_arrow_key_down_internal(t_history_buffer *history, uin
 	cursor_position[1] = ft_strlen(*input);
 }
 
-static void	prompt_handle_arrow_key_right_internal(uint32_t *cursor_position_current, uint32_t prompt_length_current)
+static void	prompt_handle_arrow_key_right_internal(uint32_t *cursor_position_current, uint32_t prompt_length_current, uint32_t prompt_string_length)
 {
 	if (cursor_position_current[1] < prompt_length_current)
 		cursor_position_current[1]++;
-	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + 2);
+	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + prompt_string_length);
 }
 
-static void	prompt_handle_arrow_key_left_internal(	uint32_t *cursor_position_current)
+static void	prompt_handle_arrow_key_left_internal(	uint32_t *cursor_position_current, uint32_t prompt_string_length)
 {
 	if (cursor_position_current[1] > 0)
 		cursor_position_current[1]--;
-	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + 2);
+	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + prompt_string_length);
 }
 
 bool	prompt_handle_escape_sequence_internal(t_prompt *prompt, char buffer[], char **input, uint32_t cursor_position_current[2])
@@ -68,8 +68,8 @@ bool	prompt_handle_escape_sequence_internal(t_prompt *prompt, char buffer[], cha
 		return (prompt_handle_arrow_key_down_internal(&prompt->history, \
 					cursor_position_current, input), 1);
 	else if (buffer[0] == 91 && buffer[1] == 67)
-		prompt_handle_arrow_key_right_internal(cursor_position_current, prompt_length_current);
+		prompt_handle_arrow_key_right_internal(cursor_position_current, prompt_length_current, prompt->prompt_length);
 	else if (buffer[0] == 91 && buffer[1] == 68)
-		prompt_handle_arrow_key_left_internal(cursor_position_current);
+		prompt_handle_arrow_key_left_internal(cursor_position_current, prompt->prompt_length);
 	return (0);
 }

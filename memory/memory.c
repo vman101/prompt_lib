@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 14:47:33 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 15:11:28 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/11 11:53:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	lst_memory(void *mem, void (*del)(void *c), int mode)
 	static t_clean	*list;
 	t_clean			*new;
 
-	if (mode == CLEAN)
+	if (mode == FAIL)
 		return (lst_list_clean(&list), exit(EXIT_FAILURE));
 	else if (mode == END)
 		return (lst_list_clean(&list));

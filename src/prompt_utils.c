@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:23:40 by anarama           #+#    #+#             */
-/*   Updated: 2024/11/10 21:31:22 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 14:07:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ uint32_t	prompt_display_string_set_internal(t_prompt *prompt, const char *prompt
 {
 	uint32_t	prompt_string_length;
 
-	prompt_string_length = ft_strlen(prompt_string) + 1;
+	prompt_string_length = ft_strlen(prompt_string);
 	prompt->prompt = (char *)prompt_string;
 	return (prompt_string_length);
 }
@@ -38,7 +38,7 @@ t_prompt	prompt_create_internal(char const *prompt)
 	tmp.history.buffer_capacity = BUFFER_CAPACITY;
 	tmp.exists = true;
 	if (!prompt)
-		tmp.prompt = ">";
+		tmp.prompt = "> ";
 	tmp.prompt_display_func = prompt_print_custom_string_internal;
 	return (tmp);
 }
@@ -51,14 +51,15 @@ char	*prompt_get(const char *prompt)
 	if (!_prompt.exists)
 		_prompt = prompt_create_internal(prompt);
 	_prompt.prompt = NULL;
+	lst_memory(&_prompt, prompt_destroy, ADD);
 	_prompt.prompt_length = prompt_display_string_set_internal(&_prompt, prompt);
 	prompt_get_input_internal(&_prompt, PROMPT_INPUT_BUFFER_SIZE, "\n");
 	if (!_prompt.command || !*_prompt.command)
-		return (ft_printf("Failed to read" NL), NULL);
+		return (NULL);
 	ft_putstr_fd(SCREEN_CLEAR_TO_EOF, 1);
 	input = ft_strdup(_prompt.command);
 	if (!input)
-		return (perror("malloc"), lst_memory(NULL, NULL, CLEAN), NULL);
+		return (perror("malloc"), lst_memory(NULL, NULL, FAIL), NULL);
 	return (input);
 }
 

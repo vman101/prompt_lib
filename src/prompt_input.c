@@ -6,35 +6,47 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 19:40:20 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 22:56:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 14:10:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../prompt.h"
 
-static void	prompt_handle_accepted_input_internal(t_prompt *prompt, uint32_t cursor_position[2], char **input, char buffer[])
+static uint8_t	prompt_handle_accepted_input_internal(t_prompt *prompt, uint32_t cursor_position[2], char **input, char buffer[])
 {
 	bool	do_refresh;
 
 	do_refresh = true;
-	if (buffer[0] == ESC)
-		do_refresh = prompt_handle_escape_sequence_internal(prompt, &buffer[1], input, cursor_position);
-	else if (buffer[0] == '\t')
-		prompt_handle_tab_internal(input, prompt);
-	else if (buffer[0] == DEL)
-		prompt_handle_backspace_internal(*input, cursor_position, \
-				ft_strlen(*input));
-	else if (buffer[0] == '\n')
+	switch (buffer[0])
 	{
-		prompt_handle_new_character_to_input_internal(input, buffer[0], cursor_position, ft_strlen(*input));
-		prompt->prompt_display_func(prompt->prompt);
-		cursor_position[0]++;
-		return ;
+		case ESC:
+			do_refresh = prompt_handle_escape_sequence_internal(prompt, &buffer[1], input, cursor_position);
+			break ;
+		case '\t':
+			prompt_handle_tab_internal(input, prompt);
+			break ;
+		case DEL:
+			prompt_handle_backspace_internal(*input, cursor_position, \
+					ft_strlen(*input));
+			break ;
+		case 3:
+			return (1);
+			break ;
+		case 4:
+			return (1);
+			break ;
+		case '\n':
+			prompt_handle_new_character_to_input_internal(input, buffer[0], cursor_position, ft_strlen(*input));
+			prompt->prompt_display_func(prompt->prompt);
+			cursor_position[0]++;
+			break ;
+		default:
+			prompt_handle_single_char_input_internal(input, buffer, cursor_position, &do_refresh);
+			break ;
 	}
-	else
-		prompt_handle_single_char_input_internal(input, buffer, cursor_position, &do_refresh);
 	if (do_refresh == true)
 		prompt_refresh_line_internal(*input, prompt->prompt_length, cursor_position);
+	return (0);
 }
 
 static bool	prompt_is_delimiter(char *input, const char *delimiter)
@@ -61,19 +73,20 @@ static char	*prompt_handle_input(t_prompt *prompt, char *input, uint32_t cursor_
 	char		buffer[100];
 	int64_t		bytes_read;
 
+	bytes_read = sizeof(buffer);
 	while (1)
 	{
-		ft_bzero(buffer, 100);
+		ft_bzero(buffer, bytes_read);
 		bytes_read = ft_read(STDIN_FILENO, buffer, 20);
 		if (bytes_read > 3)
 			prompt_handle_rapid_input_internal(buffer, cursor_position, &input, prompt->prompt_length);
 		else if (bytes_read >= 1)
 		{
-			bytes_read = ft_strlen(buffer);
 			if (buffer[bytes_read - (bytes_read > 0)] == '\n')
 				if (prompt_is_delimiter(input, delimiter))
 					break ;
-			prompt_handle_accepted_input_internal(prompt, cursor_position, &input, buffer);
+			if (prompt_handle_accepted_input_internal(prompt, cursor_position, &input, buffer) == 1)
+				break ;
 		}
 	}
 	return (input);

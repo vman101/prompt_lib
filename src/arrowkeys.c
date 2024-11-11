@@ -6,7 +6,7 @@
 /*   By: anarama <anarama@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 11:02:39 by victor            #+#    #+#             */
-/*   Updated: 2024/11/10 19:18:16 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:10:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,14 @@ static void	prompt_handle_arrow_key_right_internal(uint32_t *cursor_position_cur
 {
 	if (cursor_position_current[1] < prompt_length_current)
 		cursor_position_current[1]++;
-	else
-		ft_putstr_fd(CURSOR_MOVE_LEFT, 1);
+	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + 2);
 }
 
 static void	prompt_handle_arrow_key_left_internal(	uint32_t *cursor_position_current)
 {
 	if (cursor_position_current[1] > 0)
 		cursor_position_current[1]--;
-	else
-		ft_putstr_fd(CURSOR_MOVE_RIGHT, 1);
+	cursor_position_set(cursor_position_current[0], cursor_position_current[1] + 2);
 }
 
 bool	prompt_handle_escape_sequence_internal(t_prompt *prompt, char buffer[], char **input, uint32_t cursor_position_current[2])

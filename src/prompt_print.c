@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 16:11:25 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 19:07:24 by vvobis           ###   ########.fr       */
+/*   Updated: 2024/11/11 11:40:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	prompt_print_custom_string_internal(char *string)
 {
-	ft_putstr_fd(string, 1);
+	ft_putstr_fd(string, STDOUT_FILENO);
 }

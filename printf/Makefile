@@ -6,19 +6,19 @@
 #    By: victor </var/spool/mail/victor>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/14 09:21:46 by victor            #+#    #+#              #
-#    Updated: 2024/11/10 21:35:47 by marvin           ###   ########.fr        #
+#    Updated: 2024/11/11 11:52:05 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBDIR := lib
 NAME := $(LIBDIR)/libftprintf.a
 CC := gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 SRC := ft_fprintf.c ft_printf.c ft_putascii.c ft_puthex.c ft_putptr.c ft_strlen.c ft_putfloat.c
 OBJ := $(SRC:.c=.o)
 
-ifdef DEBUG
-CFLAGS += -g3
+ifdef RELEASE
+CFLAGS -= -g3
 endif
 
 MKDIR = mkdir

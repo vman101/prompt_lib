@@ -6,7 +6,7 @@
 /*   By: vvobis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 14:40:41 by vvobis            #+#    #+#             */
-/*   Updated: 2024/11/10 22:08:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/11/11 13:02:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,33 @@
 # include "memory/memory.h"
 # include <errno.h>
 # include "printf/ft_printf.h"
+# include <fcntl.h>
 
 # include <stdbool.h>
 
+
 # ifdef _WIN32
+
+#  include <windows.h>
+#  include <io.h>
+
 #  define NL "\r\n"
+
 #  undef STDOUT_FILENO
 #  undef STDIN_FILENO
+
 #  define STDIN_FILENO _fileno(stdin)
 #  define STDOUT_FILENO _fileno(stdout)
+
 # else
+
 #  define NL "\n"
+
 # endif
 
-# define DEL 127
 # define EOT 4
 # define ESC 27
+# define DEL 127
 
 # define SCREEN_DISBLE_WRAPPING "\033[?7l"
 # define SCREEN_ENABLE_WRAPPING "\033[?7h"

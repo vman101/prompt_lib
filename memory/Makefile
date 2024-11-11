@@ -6,13 +6,13 @@
 #    By: vvobis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/10 15:02:31 by vvobis            #+#    #+#              #
-#    Updated: 2024/11/10 21:35:52 by marvin           ###   ########.fr        #
+#    Updated: 2024/11/11 11:52:24 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC := gcc
 
-CFLAGS = -Werror -Wextra -Wall
+CFLAGS = -Werror -Wextra -Wall -g3
 
 SRC := memory.c list.c ft_free.c
 
@@ -22,8 +22,8 @@ OBJ := $(SRC:%.c=$(OBJDIR)/%.o)
 LIBDIR := lib
 TARGET := $(LIBDIR)/memory.a
 
-ifdef DEBUG
-CFLAGS += -g3
+ifdef RELEASE
+CFLAGS -= -g3
 endif
 
 MKDIR = mkdir

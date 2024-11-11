@@ -6,18 +6,18 @@
 #    By: anarama <anarama@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/05 12:24:47 by victor            #+#    #+#              #
-#    Updated: 2024/11/10 22:13:18 by marvin           ###   ########.fr        #
+#    Updated: 2024/11/11 12:55:00 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # COMPILER AND FLAGS
 CC          := gcc
-CFLAGS      = -Werror -Wall -Wextra
+CFLAGS      = -Werror -Wall -Wextra -g3
 
 RM			= rm
 
-ifdef DEBUG
-	CFLAGS += -g3
+ifdef release
+	CFLAGS -= -g3
 endif
 
 
@@ -56,10 +56,13 @@ NAME        := $(LIBDIR)/prompt.a
 
 all: $(NAME)
 
-$(NAME): $(OBJ) | $(LIBS)
+test: $(NAME)
+	$(CC) $(CFLAGS) main.c $(NAME) $(LIBS)
+
+$(NAME): $(OBJ) prompt.h | $(LIBS)
 	ar rcs $@ $(OBJ) $(LIBS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR): $(LIBDIR)
